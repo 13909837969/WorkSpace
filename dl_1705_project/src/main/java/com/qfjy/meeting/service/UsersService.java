@@ -1,0 +1,17 @@
+package com.qfjy.meeting.service;
+
+import org.springframework.data.repository.query.Param;
+
+import com.qfjy.meeting.bean.Users;
+
+public interface UsersService {
+	public Users getByOpenid(String openid);
+	//根据邮箱，查询Users是否存在
+	public Users getByEmail(String email);
+	
+	public int updateUsersWidById(@Param("id")String id,@Param("wid")String wid);
+	public String getWidByOpenid(String openid);
+	
+	public int updateById(Users u);
+
+}

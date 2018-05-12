@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!-- =========================================================
+         Shiro Core Components - Not Spring Specific
+         Spring 核心 组件配置， 不是Spring特有的
+         ========================================================= -->
+    <!-- 
+    	1、配置 securityManager
+    -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="realm" ref="jdbcRealm"/>
+    </bean>
+
+    <!-- 配置缓存信息-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <!--  用户自定义安全数据（用户、角色 ，等等... -->
+    <bean id="jdbcRealm" class="com.qfjy.meeting.web.shiro.ShiroRealm">
+        <property name="credentialsMatcher">
+        	<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        		<property name="hashAlgorithmName" value="MD5"></property>
+        		<property name="hashIterations" value="1705"></property>
+        	</bean>
+        </property>
+    </bean>
+     <!-- 加密操作 测试
+        <property name="credentialsMatcher">           
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="SHA-256"/>
+                <property name="storedCredentialsHexEncoded" value="false"/>
+            </bean>
+        </property>
+         -->
+
+
+    <!-- SpringIOC容器，Bean后置处理器 自动调用 init()/destory()方法 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 启动Shiro注解配置， -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+   
+
+    <!-- 
+       bean id shiroFilter 一定要和web.xml shiroFilter一样
+     -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--未认证 ： 登录页面 -->
+        <property name="loginUrl" value="/pages/admin/login.jsp"/>
+        <!-- 认证后，才能访问的页面 -->
+        <property name="successUrl" value="/pages/admin/succ.jsp"/>
+        <!-- 认证后，无权限页面 -->
+        <property name="unauthorizedUrl" value="/unauthor.jsp"/>
+      <!-- 
+      语法： 
+       url=过滤器[参数]
+       Ant通配符
+         ?  匹配任意单个字符
+         *  匹配任意字符（同目录下）
+         ** 级联匹配任意
+       
+         anon  匿名过滤器（不需要认证，就能访问页面）
+         authc 认证过滤器（需要认证，才能访问页面）
+         logout登出过滤器（登出操作)
+         
+         URL参数匹配规则：优先匹配原则
+         
+         授权：
+           单个角色：  /资源=roles[角色名称]
+           多个角色： /资源=roles["角色名称","角色名称1"]
+       -->
+       <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"></property>
+    </bean>
+
+    <!-- 2工厂方式注入 -->
+   <!-- 1创建Bean实例 -->
+   <bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuild" factory-method="build"></bean>
+   <bean id="filterChainDefinitionMapBuild" class="com.qfjy.meeting.web.shiro.FilterChainDefinitionMapBuild"></bean>
+</beans>

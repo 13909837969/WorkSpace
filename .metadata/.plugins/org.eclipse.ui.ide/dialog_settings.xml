@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Administrator\Desktop\HR"/>
+			<item value="C:\Users\Administrator\Desktop\武文涛\weifuwu\ssh博客系统+bootsrap\Yor-WebSite"/>
+			<item value="C:\Users\Administrator\Desktop\git\ssm"/>
+			<item value="C:\Users\Administrator\Desktop\springBoot-Jsp"/>
+			<item value="D:\temp\DemoWeb"/>
+			<item value="C:\Users\Administrator\Desktop\dl_1705_spring_jpa_springmvc"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+</section>

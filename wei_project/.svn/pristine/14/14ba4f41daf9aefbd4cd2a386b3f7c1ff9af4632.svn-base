@@ -1,0 +1,43 @@
+package com.qfjy.meeting.service.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.qfjy.meeting.bean.LoginUsers;
+import com.qfjy.meeting.dao.LoginUsersRepository;
+import com.qfjy.meeting.service.LoginUsersService;
+
+@Service
+public class LoginUsersServiceImpl implements LoginUsersService {
+   @PersistenceContext
+	EntityManager em;
+	@Autowired
+	LoginUsersRepository loginUsersRepository;
+	
+	@Override
+	public LoginUsers getByUsername(String uname) {
+		// TODO Auto-generated method stub
+		return loginUsersRepository.getByUsername(uname);
+	}
+	//查询所有的登录用户数据
+	public List<LoginUsers> getAll(){
+		return loginUsersRepository.findAll();
+	}
+	//删除  executeUpdate
+
+	public int deleteById(String id){
+
+		return loginUsersRepository.deleteId(id);
+		
+
+	}
+	
+}

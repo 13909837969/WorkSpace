@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="springBoot-Jsp"/>
+<aop-project name="HR"/>
+<aop-project name="springdata_crud"/>
+<aop-project name="shop"/>
+<aop-project name="dl_1705_ssm_shiro"/>
+<aop-project name="dl_springdate"/>
+<aop-project name="ssm"/>
+</aop-reference-model>

@@ -1,0 +1,34 @@
+package com.qfjy.meeting.dao;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.qfjy.meeting.bean.Users;
+public interface UsersRepository extends JpaRepository<Users,String> {
+	//根据openid，查询Users表中数据是否存在(验证微信用户是否进行数据绑定（登录）)
+	
+	@Query(value=" select * from users where wid=(select wid from wei_users where openid=?)"
+			,nativeQuery=true)
+	public Users getByOpenid(String openid);
+	
+	//根据邮箱，查询Users是否存在
+	public Users getByEmail(String email);
+	//进行绑定功能 Users表中wid=赋值
+	@Transactional
+	@Modifying
+	@Query(value="update Users set wid=:wid where id=:id",nativeQuery=true)
+	public int updateUsersWidById(@Param("id")String id,@Param("wid")String wid);
+
+    //根据openid 得到wei_users wid
+	@Query(value="select wid from wei_users where openid=?",nativeQuery=true)
+	public String getWidByOpenid(String openid);
+	//更新方法
+	@Transactional
+	@Modifying
+	@Query(value=" update users  set uname=?, province=?,city=?,telphone=? where id=? "
+			,nativeQuery=true)
+	public int updateById(String uname,String province,String city,String telphone,String id);
+}
